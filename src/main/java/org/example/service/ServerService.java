@@ -17,6 +17,8 @@ import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Scanner;
 
+import static java.lang.System.exit;
+
 @AllArgsConstructor
 @Getter
 @Setter
@@ -76,6 +78,7 @@ public class ServerService {
                     } else {
                         connection.sendTCP(new TextTO("THIS USER ALREADY EXIST"));
                         connection.close();
+                        exit(0);
                     }
                 }
             }
