@@ -15,4 +15,5 @@ public class ClientTO implements Serializable {
     private String ip;
     private int connectionId;
     private String name;
+    private String userType = "PLAYER";
 }
