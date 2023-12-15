@@ -10,20 +10,26 @@
     <plugins>
       <plugin>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.1.0</version>
+        <version>${maven-jar-plugin.version}</version>
         <configuration>
           <archive>
             <manifest>
               <addClasspath>true</addClasspath>
-              <mainClass>org.example.App</mainClass>
+              <mainClass>${mainClass}</mainClass>
             </manifest>
           </archive>
         </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
+        <version>${maven-compiler-plugin.version}</version>
         <configuration>
-          <release>17</release>
+          <source>${java.version}</source>
+          <target>${java.version}</target>
+          <release>${java.version}</release>
+          <compilerArgs>
+            <arg>-parameters</arg>
+          </compilerArgs>
         </configuration>
       </plugin>
       <plugin>
@@ -62,8 +68,14 @@
     </dependency>
   </dependencies>
   <properties>
-    <maven.compiler.target>20</maven.compiler.target>
-    <maven.compiler.source>20</maven.compiler.source>
+    <maven-jar-plugin.version>3.3.0</maven-jar-plugin.version>
+    <mainClass>org.example.App</mainClass>
+    <java.version>17</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <commons-lang3.version>3.13.0</commons-lang3.version>
+    <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
+    <plexus-utils.version>4.0.0</plexus-utils.version>
+    <maven-clean-plugin.version>3.3.1</maven-clean-plugin.version>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
 </project>
