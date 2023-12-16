@@ -17,6 +17,7 @@ import org.example.entity.Player;
 import org.example.mapper.ClientMapper;
 import org.example.mapper.ClientPublicInfoMapper;
 import org.example.repository.ClientsRepository;
+import org.example.repository.PlayerRepository;
 import org.example.to.domain.game.PlayerTO;
 import org.example.to.domain.server.*;
 import org.example.util.IsUniqueClient;
@@ -164,6 +165,6 @@ public class ServerService {
         for(ClientTO clientTO: clients){
             players.add(new Player(ClientMapper.toObject(clientTO), 3, new ArrayList<EstablishmentCard>(), new ArrayList<LandmarkCard>()));
         }
-        System.out.println(players);
+        PlayerRepository.setPlayers(players);
     }
 }

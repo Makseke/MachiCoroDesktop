@@ -2,6 +2,7 @@ package org.example.controller;
 
 import com.esotericsoftware.kryonet.Server;
 import org.example.App;
+import org.example.repository.PlayerRepository;
 import org.example.service.ServerService;
 import org.example.to.domain.server.StartGameTO;
 
@@ -28,6 +29,7 @@ public class HostController {
                     App.gameStatus = true;
                     server.sendToAllTCP(new StartGameTO());
                     ServerService.registerPlayers();
+                    System.out.println(PlayerRepository.getPlayers());
                 }
                 case 2 -> {
                     ServerService.showPlayersList();
