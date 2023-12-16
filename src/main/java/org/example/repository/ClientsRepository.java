@@ -6,9 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.example.App;
 import org.example.mapper.ClientPublicInfoMapper;
-import org.example.to.domain.ClientPublicInfoTO;
-import org.example.to.domain.ClientTO;
-import org.example.to.domain.ClientsListTO;
+import org.example.to.domain.server.ClientPublicInfoTO;
+import org.example.to.domain.server.ClientTO;
 
 import java.util.ArrayList;
 import java.util.List;

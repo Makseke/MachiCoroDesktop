@@ -8,18 +8,18 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.example.App;
+import org.example.controller.HostController;
 import org.example.mapper.ClientPublicInfoMapper;
 import org.example.repository.ClientsRepository;
-import org.example.to.domain.ClientPublicInfoTO;
-import org.example.to.domain.ClientTO;
-import org.example.to.domain.ClientsListTO;
-import org.example.to.domain.TextTO;
+import org.example.to.domain.server.ClientPublicInfoTO;
+import org.example.to.domain.server.ClientTO;
+import org.example.to.domain.server.ClientsListTO;
+import org.example.to.domain.server.TextTO;
 import org.example.util.IsUniqueClient;
 
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -29,18 +29,15 @@ import static java.lang.System.exit;
 @Getter
 @Setter
 public class ServerService {
-    private static Scanner in = new Scanner(System.in);
+    private static final Scanner in = new Scanner(System.in);
     private static int  operationType;
-    private static Server server;
+
+    @Getter
+    private static Server server = new Server();
 
     private static Gson gson = new Gson();
 
     public static void startServer() {
-        server = new Server();
-
-        server.getKryo().register(List.class);
-        server.getKryo().register(ArrayList.class);
-
         server.getKryo().register(TextTO.class);
         server.getKryo().register(ClientTO.class);
         server.getKryo().register(ClientPublicInfoTO.class);
@@ -58,7 +55,7 @@ public class ServerService {
             throw new RuntimeException(e);
         }
 
-        ClientTO clientTO = new ClientTO(localhost.getHostAddress(), 0, clientName, "HOST   ");
+        ClientTO clientTO = new ClientTO(localhost.getHostAddress(), 0, clientName, "[HOST]  ");
         clientTO.setConnectionId(0);
         List<ClientTO> clients = App.clientsRepository.getClients();
         clients.add(clientTO);
@@ -129,35 +126,17 @@ public class ServerService {
         try {
             server.start();
             server.bind(54555, 54777);
-            serverController();
+
+            HostController.hostController();
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    public static void serverController(){
-        while (true){
-            System.out.println("SELECT OPTION " +
-                    "\n 1 - SHOW PLAYERS LIST " +
-                    "\n 2 - SHOW NAME " +
-                    "\n 3 - EXIT");
-            operationType = in.nextInt();
-            switch (operationType){
-                case 1:
-                    showPlayersList();
-                    continue;
-                case 2:
-                    showHostName();
-                    continue;
-                case 3:
-                    exit(0);
-                default:
-                    App.logger.info("INVALID INPUT");
-            }
-        }
-    }
 
-    private static void showPlayersList(){
+
+    public static void showPlayersList(){
         App.logger.info("LOBBY LIST");
         List<ClientPublicInfoTO> clients = ClientsRepository.getClientPublicInfo();
         for (ClientPublicInfoTO clientInfo : clients){
@@ -165,7 +144,7 @@ public class ServerService {
         }
     }
 
-    private static void showHostName(){
+    public static void showHostName(){
         App.logger.info("DISPLAY NAME");
         System.out.println("YOUR NAME IS " + ClientPublicInfoMapper.toTransferObject(ClientsRepository.getClientToByConnectionId(0)).getName());
 

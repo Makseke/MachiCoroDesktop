@@ -6,13 +6,15 @@ import com.esotericsoftware.kryonet.Listener;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.example.App;
-import org.example.to.domain.ClientPublicInfoTO;
-import org.example.to.domain.ClientTO;
-import org.example.to.domain.ClientsListTO;
-import org.example.to.domain.TextTO;
+import org.example.controller.ClientController;
+import org.example.to.domain.server.ClientPublicInfoTO;
+import org.example.to.domain.server.ClientTO;
+import org.example.to.domain.server.ClientsListTO;
+import org.example.to.domain.server.TextTO;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -25,22 +27,18 @@ import java.util.Scanner;
 import static java.lang.System.exit;
 
 @AllArgsConstructor
-@Getter
-@Setter
+@Data
 public class ClientService {
-    private static Scanner in = new Scanner(System.in);
+    private static final Scanner in = new Scanner(System.in);
     private static int  operationType;
 
-    private static Client client;
+    @Getter
+    private static Client client = new Client();
 
     private static Gson gson = new Gson();
 
+
     public static void startClient() {
-        client = new Client();
-
-        client.getKryo().register(List.class);
-        client.getKryo().register(ArrayList.class);
-
         client.getKryo().register(TextTO.class);
         client.getKryo().register(ClientTO.class);
         client.getKryo().register(ClientPublicInfoTO.class);
@@ -60,7 +58,7 @@ public class ClientService {
             throw new RuntimeException(e);
         }
 
-        ClientTO clientTO = new ClientTO(localhost.getHostAddress(), 0, clientName, "PLAYER");
+        ClientTO clientTO = new ClientTO(localhost.getHostAddress(), 0, clientName, "[PLAYER]");
 
         client.addListener(new Listener() {
             @Override
@@ -96,34 +94,10 @@ public class ClientService {
             client.connect(5000, ip, 54555, 54777);
             App.logger.info("CONNECTED AS " + clientTO.getName() + " WITH IP " + clientTO.getIp());
 
-            clientController();
+            ClientController.clientController();
 
         } catch (IOException e) {
             e.printStackTrace();
-        }
-    }
-
-    public static void clientController(){
-        while (true){
-            System.out.println("SELECT OPTION " +
-                    "\n 1 - SHOW PLAYERS LIST " +
-                    "\n 2 - SHOW NAME " +
-                    "\n 3 - EXIT");
-            operationType = in.nextInt();
-            switch (operationType){
-                case 1:
-                    App.logger.info("PLAYERS LIST ");
-                    client.sendTCP(new ClientsListTO());
-                    continue;
-                case 2:
-                    App.logger.info("CLIENT NAME");
-                    client.sendTCP(new ClientPublicInfoTO());
-                    continue;
-                case 3:
-                    exit(0);
-                default:
-                    App.logger.info("INVALID INPUT");
-            }
         }
     }
 }

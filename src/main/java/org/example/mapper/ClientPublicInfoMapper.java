@@ -1,7 +1,7 @@
 package org.example.mapper;
 
-import org.example.to.domain.ClientPublicInfoTO;
-import org.example.to.domain.ClientTO;
+import org.example.to.domain.server.ClientPublicInfoTO;
+import org.example.to.domain.server.ClientTO;
 
 public class ClientPublicInfoMapper {
     public static ClientPublicInfoTO toTransferObject(ClientTO client){
