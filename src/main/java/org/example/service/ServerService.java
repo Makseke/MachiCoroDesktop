@@ -152,4 +152,9 @@ public class ServerService {
         App.logger.info("DISPLAY NAME");
         System.out.println("YOUR NAME IS " + ClientPublicInfoMapper.toTransferObject(ClientsRepository.getClientToByConnectionId(0)).getName());
     }
+    public static void registerPlayers(){
+        App.clientsRepository.getClients();
+
+
+    }
 }
