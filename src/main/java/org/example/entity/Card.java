@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class Card {
+    private int id;
     private String title;
     private String description;
     private int cost;
