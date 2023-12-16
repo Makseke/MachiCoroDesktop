@@ -10,8 +10,8 @@ import java.util.Scanner;
 
 import static java.lang.System.exit;
 
-public class Controller {
-    private static Scanner in = new Scanner(System.in);
+public class LaunchController {
+    private static final Scanner in = new Scanner(System.in);
     int operationType;
 
 
@@ -27,19 +27,17 @@ public class Controller {
         while (true){
             System.out.println("SELECT START MODE \n 1 - SERVER \n 2 - CLIENT \n 3 - EXIT");
             operationType = in.nextInt();
-            switch (operationType){
-                case 1:
+            switch (operationType) {
+                case 1 -> {
                     App.logger.info("SERVER START ON IP " + localhost.getHostAddress());
                     ServerService.startServer();
-                    break;
-                case 2:
+                }
+                case 2 -> {
                     App.logger.info("YOUR IP IS " + localhost.getHostAddress());
                     ClientService.startClient();
-                    break;
-                case 3:
-                    exit(0);
-                default:
-                    App.logger.info("INVALID INPUT");
+                }
+                case 3 -> exit(0);
+                default -> App.logger.info("INVALID INPUT");
             }
         }
     }

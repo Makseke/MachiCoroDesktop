@@ -3,7 +3,7 @@ package org.example;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import org.example.controller.Controller;
+import org.example.controller.LaunchController;
 import org.example.repository.ClientsRepository;
 
 import org.slf4j.Logger;
@@ -19,8 +19,8 @@ public class App {
 
     public static void main(String[] args) {
         logger.info("VERSION 0.1 HAS STARTED");
-        Controller controller = new Controller();
-        controller.launchController();
+        LaunchController launchController = new LaunchController();
+        launchController.launchController();
     }
 
 
