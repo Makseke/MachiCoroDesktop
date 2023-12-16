@@ -15,6 +15,8 @@ import org.slf4j.LoggerFactory;
 public class App {
     public static ClientsRepository clientsRepository = new ClientsRepository();
 
+    public static boolean gameStatus = false;
+
     public static final Logger logger = LoggerFactory.getLogger("MACHICORO");
 
     public static void main(String[] args) {

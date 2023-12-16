@@ -3,6 +3,7 @@ package org.example.controller;
 import com.esotericsoftware.kryonet.Server;
 import org.example.App;
 import org.example.service.ServerService;
+import org.example.to.domain.server.StartGameTO;
 
 import java.util.Scanner;
 
@@ -15,24 +16,26 @@ public class HostController {
     private static Server server = ServerService.getServer();
 
     public static void hostController(){
-        while (true){
             System.out.println("SELECT OPTION " +
-                    "\n 1 - SHOW PLAYERS LIST " +
-                    "\n 2 - SHOW NAME " +
-                    "\n 3 - EXIT");
+                    "\n 1 - START GAME " +
+                    "\n 2 - SHOW PLAYERS LIST " +
+                    "\n 3 - SHOW NAME " +
+                    "\n 4 - EXIT");
             operationType = in.nextInt();
             switch (operationType) {
                 case 1 -> {
-                    ServerService.showPlayersList();
-                    continue;
+                    App.logger.info("GAME STARTED");
+                    App.gameStatus = true;
+                    server.sendToAllTCP(new StartGameTO());
                 }
                 case 2 -> {
-                    ServerService.showHostName();
-                    continue;
+                    ServerService.showPlayersList();
                 }
-                case 3 -> exit(0);
+                case 3 -> {
+                    ServerService.showHostName();
+                }
+                case 4 -> exit(0);
                 default -> App.logger.info("INVALID INPUT");
-            }
         }
     }
 }
