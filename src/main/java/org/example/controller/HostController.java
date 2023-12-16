@@ -27,6 +27,7 @@ public class HostController {
                     App.logger.info("GAME STARTED");
                     App.gameStatus = true;
                     server.sendToAllTCP(new StartGameTO());
+                    ServerService.registerPlayers();
                 }
                 case 2 -> {
                     ServerService.showPlayersList();

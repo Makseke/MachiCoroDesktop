@@ -11,14 +11,20 @@ import org.example.App;
 import org.example.controller.HostController;
 import org.example.controller.PlayerClientController;
 import org.example.controller.PlayerHostController;
+import org.example.entity.EstablishmentCard;
+import org.example.entity.LandmarkCard;
+import org.example.entity.Player;
+import org.example.mapper.ClientMapper;
 import org.example.mapper.ClientPublicInfoMapper;
 import org.example.repository.ClientsRepository;
+import org.example.to.domain.game.PlayerTO;
 import org.example.to.domain.server.*;
 import org.example.util.IsUniqueClient;
 
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -153,8 +159,11 @@ public class ServerService {
         System.out.println("YOUR NAME IS " + ClientPublicInfoMapper.toTransferObject(ClientsRepository.getClientToByConnectionId(0)).getName());
     }
     public static void registerPlayers(){
-        App.clientsRepository.getClients();
-
-
+        List<ClientTO> clients = App.clientsRepository.getClients();
+        List<Player> players = new ArrayList<>();
+        for(ClientTO clientTO: clients){
+            players.add(new Player(ClientMapper.toObject(clientTO), 3, new ArrayList<EstablishmentCard>(), new ArrayList<LandmarkCard>()));
+        }
+        System.out.println(players);
     }
 }
