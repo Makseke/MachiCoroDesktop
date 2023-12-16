@@ -14,4 +14,15 @@ public class EstablishmentCardTO extends CardTO {
     private int passive;
     private int count;
     private int condition;
+
+    public EstablishmentCardTO(int id, String title, String description, int cost, int type, int passive, int count, int condition) {
+        this.setId(id);
+        this.setTitle(title);
+        this.setDescription(description);
+        this.setCost(cost);
+        this.setType(type);
+        this.setPassive(passive);
+        this.setCount(count);
+        this.setCondition(condition);
+    }
 }

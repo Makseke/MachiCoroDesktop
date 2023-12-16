@@ -1,10 +1,11 @@
 package org.example.controller;
 
 import com.esotericsoftware.kryonet.Server;
+import lombok.Setter;
 import org.example.App;
 import org.example.repository.PlayerRepository;
 import org.example.service.ServerService;
-import org.example.to.domain.server.StartGameTO;
+import org.example.to.request.StartGameRequestTO;
 
 import java.util.Scanner;
 
@@ -12,6 +13,8 @@ import static java.lang.System.exit;
 
 public class HostController {
     private static final Scanner in = new Scanner(System.in);
+
+    @Setter
     private static int operationType;
 
     private static Server server = ServerService.getServer();
@@ -27,9 +30,10 @@ public class HostController {
                 case 1 -> {
                     App.logger.info("GAME STARTED");
                     App.gameStatus = true;
-                    server.sendToAllTCP(new StartGameTO());
+                    server.sendToAllTCP(new StartGameRequestTO());
                     ServerService.registerPlayers();
                     System.out.println(PlayerRepository.getPlayers());
+                    ServerService.updateClientsPlayersLists();
                 }
                 case 2 -> {
                     ServerService.showPlayersList();

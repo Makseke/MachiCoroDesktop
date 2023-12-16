@@ -12,9 +12,4 @@ public class PlayerRepository {
     @Getter
     @Setter
     private static List<Player> players = new ArrayList<>();
-
-    public static List<Player> getPlayerList() {
-        return players;
-    }
-
 }

@@ -9,17 +9,18 @@ import lombok.Getter;
 import lombok.Setter;
 import org.example.App;
 import org.example.controller.HostController;
-import org.example.controller.PlayerClientController;
 import org.example.controller.PlayerHostController;
 import org.example.entity.EstablishmentCard;
 import org.example.entity.LandmarkCard;
 import org.example.entity.Player;
 import org.example.mapper.ClientMapper;
 import org.example.mapper.ClientPublicInfoMapper;
+import org.example.mapper.PlayerMapper;
 import org.example.repository.ClientsRepository;
 import org.example.repository.PlayerRepository;
-import org.example.to.domain.game.PlayerTO;
 import org.example.to.domain.server.*;
+import org.example.to.request.StartGameRequestTO;
+import org.example.to.request.UpdatePlayersRequestTO;
 import org.example.util.IsUniqueClient;
 
 import java.io.IOException;
@@ -34,7 +35,7 @@ import java.util.Scanner;
 @Setter
 public class ServerService {
     private static final Scanner in = new Scanner(System.in);
-    private static int  operationType;
+    private static int operationType;
 
     @Getter
     private static Server server = new Server();
@@ -46,7 +47,8 @@ public class ServerService {
         server.getKryo().register(ClientTO.class);
         server.getKryo().register(ClientPublicInfoTO.class);
         server.getKryo().register(ClientsListTO.class);
-        server.getKryo().register(StartGameTO.class);
+        server.getKryo().register(StartGameRequestTO.class);
+        server.getKryo().register(UpdatePlayersRequestTO.class);
 
 
         Scanner scanner = new Scanner(System.in);
@@ -100,14 +102,12 @@ public class ServerService {
                         connection.sendTCP(new TextTO("THIS USER ALREADY EXIST"));
                         connection.close();
                     }
-                }
-                else if (object instanceof ClientsListTO) {
+                } else if (object instanceof ClientsListTO) {
                     App.logger.info("SEND LOBBY LIST TO " + connection.getRemoteAddressTCP());
                     connection.sendTCP(
                             new ClientsListTO(gson.toJson(ClientsRepository.getClientPublicInfo()))
                     );
-                }
-                else if (object instanceof ClientPublicInfoTO) {
+                } else if (object instanceof ClientPublicInfoTO) {
                     App.logger.info("SEND CLIENT NAME TO " + connection.getRemoteAddressTCP());
                     connection.sendTCP(
                             ClientPublicInfoMapper.toTransferObject(ClientsRepository.getClientToByConnectionId(connection.getID()))
@@ -133,10 +133,10 @@ public class ServerService {
             server.start();
             server.bind(54555, 54777);
 
-            while (!App.gameStatus){
+            while (!App.gameStatus) {
                 HostController.hostController();
             }
-            while (App.gameStatus){
+            while (App.gameStatus) {
                 PlayerHostController.playerHostController();
             }
 
@@ -146,25 +146,34 @@ public class ServerService {
     }
 
 
-
-    public static void showPlayersList(){
+    public static void showPlayersList() {
         App.logger.info("LOBBY LIST");
         List<ClientPublicInfoTO> clients = ClientsRepository.getClientPublicInfo();
-        for (ClientPublicInfoTO clientInfo : clients){
+        for (ClientPublicInfoTO clientInfo : clients) {
             System.out.println(clientInfo.getClientType() + " " + clientInfo.getName());
         }
     }
 
-    public static void showHostName(){
+    public static void showHostName() {
         App.logger.info("DISPLAY NAME");
         System.out.println("YOUR NAME IS " + ClientPublicInfoMapper.toTransferObject(ClientsRepository.getClientToByConnectionId(0)).getName());
     }
-    public static void registerPlayers(){
+
+    public static void registerPlayers() {
         List<ClientTO> clients = App.clientsRepository.getClients();
         List<Player> players = new ArrayList<>();
-        for(ClientTO clientTO: clients){
+        for (ClientTO clientTO : clients) {
             players.add(new Player(ClientMapper.toObject(clientTO), 3, new ArrayList<EstablishmentCard>(), new ArrayList<LandmarkCard>()));
         }
         PlayerRepository.setPlayers(players);
+    }
+
+    public static void updateClientsPlayersLists() {
+        server.sendToAllTCP(new UpdatePlayersRequestTO(gson.toJson(
+                PlayerRepository.getPlayers()
+                        .stream()
+                        .map(PlayerMapper::toTransferObject)
+                        .toList()
+        )));
     }
 }

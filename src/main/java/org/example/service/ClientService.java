@@ -11,7 +11,11 @@ import lombok.Getter;
 import org.example.App;
 import org.example.controller.ClientController;
 import org.example.controller.PlayerClientController;
+import org.example.repository.PlayerRepository;
+import org.example.to.domain.game.PlayerTO;
 import org.example.to.domain.server.*;
+import org.example.to.request.StartGameRequestTO;
+import org.example.to.request.UpdatePlayersRequestTO;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -37,7 +41,8 @@ public class ClientService {
         client.getKryo().register(ClientTO.class);
         client.getKryo().register(ClientPublicInfoTO.class);
         client.getKryo().register(ClientsListTO.class);
-        client.getKryo().register(StartGameTO.class);
+        client.getKryo().register(StartGameRequestTO.class);
+        client.getKryo().register(UpdatePlayersRequestTO.class);
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("SELECT IP ADDRESS");
@@ -73,9 +78,14 @@ public class ClientService {
                     App.logger.info("DISPLAY NAME");
                     System.out.println("YOUR NAME IS " + response.getName());
                 }
-                else if (object instanceof StartGameTO) {
+                else if (object instanceof StartGameRequestTO) {
                     App.logger.info("GAME STARTED");
                     App.gameStatus = true;
+                }
+                else if (object instanceof UpdatePlayersRequestTO request) {
+                    App.logger.info("PLAYERS LIST UPDATED");
+                    Type listType = new TypeToken<List<PlayerTO>>() {}.getType();
+                    PlayerRepository.setPlayers(gson.fromJson(request.getPlayersJson(), listType));
                 }
 
             }

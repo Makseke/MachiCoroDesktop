@@ -1,17 +1,21 @@
 package org.example.controller;
 
 import com.esotericsoftware.kryonet.Client;
+import lombok.Setter;
 import org.example.App;
 import org.example.service.ClientService;
 import org.example.to.domain.server.ClientPublicInfoTO;
 import org.example.to.domain.server.ClientsListTO;
 
+import java.io.ByteArrayInputStream;
 import java.util.Scanner;
 
 import static java.lang.System.exit;
 
 public class ClientController {
     private static final Scanner in = new Scanner(System.in);
+
+    @Setter
     private static int operationType;
 
     private static Client client = ClientService.getClient();
