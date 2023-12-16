@@ -17,7 +17,6 @@ public class ClientController {
     private static Client client = ClientService.getClient();
 
     public static void clientController() {
-        while (true) {
             System.out.println("SELECT OPTION " +
                     "\n 1 - SHOW PLAYERS LIST " +
                     "\n 2 - SHOW NAME " +
@@ -27,16 +26,13 @@ public class ClientController {
                 case 1 -> {
                     App.logger.info("PLAYERS LIST ");
                     client.sendTCP(new ClientsListTO());
-                    continue;
                 }
                 case 2 -> {
                     App.logger.info("CLIENT NAME");
                     client.sendTCP(new ClientPublicInfoTO());
-                    continue;
                 }
                 case 3 -> exit(0);
                 default -> App.logger.info("INVALID INPUT");
             }
-        }
     }
 }

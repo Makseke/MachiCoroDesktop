@@ -8,23 +8,17 @@ import com.google.gson.reflect.TypeToken;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
-import lombok.Setter;
 import org.example.App;
 import org.example.controller.ClientController;
-import org.example.to.domain.server.ClientPublicInfoTO;
-import org.example.to.domain.server.ClientTO;
-import org.example.to.domain.server.ClientsListTO;
-import org.example.to.domain.server.TextTO;
+import org.example.controller.PlayerClientController;
+import org.example.to.domain.server.*;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
-import static java.lang.System.exit;
 
 @AllArgsConstructor
 @Data
@@ -43,6 +37,7 @@ public class ClientService {
         client.getKryo().register(ClientTO.class);
         client.getKryo().register(ClientPublicInfoTO.class);
         client.getKryo().register(ClientsListTO.class);
+        client.getKryo().register(StartGameTO.class);
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("SELECT IP ADDRESS");
@@ -78,6 +73,10 @@ public class ClientService {
                     App.logger.info("DISPLAY NAME");
                     System.out.println("YOUR NAME IS " + response.getName());
                 }
+                else if (object instanceof StartGameTO) {
+                    App.logger.info("GAME STARTED");
+                    App.gameStatus = true;
+                }
 
             }
 
@@ -94,7 +93,13 @@ public class ClientService {
             client.connect(5000, ip, 54555, 54777);
             App.logger.info("CONNECTED AS " + clientTO.getName() + " WITH IP " + clientTO.getIp());
 
-            ClientController.clientController();
+
+            while (!App.gameStatus){
+                ClientController.clientController();
+            }
+            while (App.gameStatus){
+                PlayerClientController.playerClientController();
+            }
 
         } catch (IOException e) {
             e.printStackTrace();

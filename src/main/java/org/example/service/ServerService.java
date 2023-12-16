@@ -9,12 +9,11 @@ import lombok.Getter;
 import lombok.Setter;
 import org.example.App;
 import org.example.controller.HostController;
+import org.example.controller.PlayerClientController;
+import org.example.controller.PlayerHostController;
 import org.example.mapper.ClientPublicInfoMapper;
 import org.example.repository.ClientsRepository;
-import org.example.to.domain.server.ClientPublicInfoTO;
-import org.example.to.domain.server.ClientTO;
-import org.example.to.domain.server.ClientsListTO;
-import org.example.to.domain.server.TextTO;
+import org.example.to.domain.server.*;
 import org.example.util.IsUniqueClient;
 
 import java.io.IOException;
@@ -22,8 +21,6 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Scanner;
-
-import static java.lang.System.exit;
 
 @AllArgsConstructor
 @Getter
@@ -42,6 +39,8 @@ public class ServerService {
         server.getKryo().register(ClientTO.class);
         server.getKryo().register(ClientPublicInfoTO.class);
         server.getKryo().register(ClientsListTO.class);
+        server.getKryo().register(StartGameTO.class);
+
 
         Scanner scanner = new Scanner(System.in);
 
@@ -127,7 +126,12 @@ public class ServerService {
             server.start();
             server.bind(54555, 54777);
 
-            HostController.hostController();
+            while (!App.gameStatus){
+                HostController.hostController();
+            }
+            while (App.gameStatus){
+                PlayerHostController.playerHostController();
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -147,6 +151,5 @@ public class ServerService {
     public static void showHostName(){
         App.logger.info("DISPLAY NAME");
         System.out.println("YOUR NAME IS " + ClientPublicInfoMapper.toTransferObject(ClientsRepository.getClientToByConnectionId(0)).getName());
-
     }
 }
