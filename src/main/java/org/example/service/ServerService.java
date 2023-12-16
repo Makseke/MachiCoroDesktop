@@ -8,9 +8,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.example.App;
-import org.example.controller.ClientController;
 import org.example.controller.HostController;
-import org.example.controller.PlayerController;
+import org.example.controller.PlayerClientController;
+import org.example.controller.PlayerHostController;
 import org.example.mapper.ClientPublicInfoMapper;
 import org.example.repository.ClientsRepository;
 import org.example.to.domain.server.*;
@@ -130,7 +130,7 @@ public class ServerService {
                 HostController.hostController();
             }
             while (App.gameStatus){
-                PlayerController.playerController();
+                PlayerHostController.playerHostController();
             }
 
         } catch (IOException e) {

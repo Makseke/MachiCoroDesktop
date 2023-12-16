@@ -10,7 +10,7 @@ import lombok.Data;
 import lombok.Getter;
 import org.example.App;
 import org.example.controller.ClientController;
-import org.example.controller.PlayerController;
+import org.example.controller.PlayerClientController;
 import org.example.to.domain.server.*;
 
 import java.io.IOException;
@@ -98,7 +98,7 @@ public class ClientService {
                 ClientController.clientController();
             }
             while (App.gameStatus){
-                PlayerController.playerController();
+                PlayerClientController.playerClientController();
             }
 
         } catch (IOException e) {
