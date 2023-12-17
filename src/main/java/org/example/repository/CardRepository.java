@@ -10,7 +10,7 @@ public class CardRepository {
                 return new EstablishmentCard(id, "Поля", "Получите 1 монету в ход любого игрока", 1, 3, 1, 1, 1);
             }
             case 2 -> {
-                return new EstablishmentCard(id, "Ферма", "Получите 1 монету в свой ход", 1, 3, 1, 1, 1);
+                return new EstablishmentCard(id, "Ферма", "Получите 1 монету в свой ход", 1, 2, 1, 1, 1);
             }
             default -> {
                 return new EstablishmentCard(id, "Ошибка Id", "Меня не должно тут быть", 100, 1, 100, 1, 1);
