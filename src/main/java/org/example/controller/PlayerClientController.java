@@ -27,16 +27,16 @@ public class PlayerClientController {
         operationType = in.nextInt();
         switch (operationType) {
             case 1 -> {
-
+                System.out.println(" ");
             }
             case 2 -> {
-
+                System.out.println(" ");
             }
             case 3 -> {
                 App.logger.info("ALL PLAYERS INFO");
                 PlayerService.getPlayersInfo();
             }
-            case 3 -> exit(0);
+            case 4 -> exit(0);
             default -> App.logger.info("INVALID INPUT");
         }
     }

@@ -18,4 +18,16 @@ public class EstablishmentCard extends Card {
     private int count;
     //your move, someone else's, everyone and etc.
     private int condition;
+
+    public EstablishmentCard(int id, String title, String description, int cost, int type, int passive, int count, int condition) {
+        this.setId(id);
+        this.setTitle(title);
+        this.setDescription(description);
+        this.setCost(cost);
+        this.setType(type);
+        this.setPassive(passive);
+        this.setCount(count);
+        this.setCondition(condition);
+    }
 }
+

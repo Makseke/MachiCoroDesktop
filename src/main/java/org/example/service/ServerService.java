@@ -16,6 +16,7 @@ import org.example.entity.Player;
 import org.example.mapper.ClientMapper;
 import org.example.mapper.ClientPublicInfoMapper;
 import org.example.mapper.PlayerMapper;
+import org.example.repository.CardRepository;
 import org.example.repository.ClientsRepository;
 import org.example.repository.PlayerRepository;
 import org.example.to.domain.server.*;
@@ -163,7 +164,7 @@ public class ServerService {
         List<ClientTO> clients = App.clientsRepository.getClients();
         List<Player> players = new ArrayList<>();
         for (ClientTO clientTO : clients) {
-            players.add(new Player(ClientMapper.toObject(clientTO), 3, new ArrayList<EstablishmentCard>(), new ArrayList<LandmarkCard>()));
+            players.add(new Player(ClientMapper.toObject(clientTO), 3, List.of(CardRepository.addEstablishmentCard(1), CardRepository.addEstablishmentCard(2)), List.of(CardRepository.addLandscapeCard(1), CardRepository.addLandscapeCard(2), CardRepository.addLandscapeCard(3), CardRepository.addLandscapeCard(4))));
         }
         PlayerRepository.setPlayers(players);
     }

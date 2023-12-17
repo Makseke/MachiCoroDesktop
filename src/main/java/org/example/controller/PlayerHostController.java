@@ -33,7 +33,7 @@ public class PlayerHostController {
                 App.logger.info("ALL PLAYERS INFO");
                 PlayerService.getPlayersInfo();
             }
-            case 3 -> exit(0);
+            case 4 -> exit(0);
             default -> App.logger.info("INVALID INPUT");
         }
     }
