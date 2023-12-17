@@ -3,6 +3,7 @@ package org.example.controller;
 import com.esotericsoftware.kryonet.Client;
 import org.example.App;
 import org.example.service.ClientService;
+import org.example.service.PlayerService;
 import org.example.service.ServerService;
 import org.example.to.domain.server.ClientPublicInfoTO;
 import org.example.to.domain.server.ClientsListTO;
@@ -21,16 +22,19 @@ public class PlayerClientController {
         System.out.println("SELECT OPTION " +
                 "\n 1 - MY INFO " +
                 "\n 2 - PLAYERS INFO " +
-                "\n 3 - EXIT");
+                "\n 3 - ALL PLAYERS INFO " +
+                "\n 4 - EXIT");
         operationType = in.nextInt();
         switch (operationType) {
             case 1 -> {
-                App.logger.info("PLAYERS LIST ");
-                client.sendTCP(new ClientsListTO());
+
             }
             case 2 -> {
-                App.logger.info("CLIENT NAME");
-                client.sendTCP(new ClientPublicInfoTO());
+
+            }
+            case 3 -> {
+                App.logger.info("ALL PLAYERS INFO");
+                PlayerService.getPlayersInfo();
             }
             case 3 -> exit(0);
             default -> App.logger.info("INVALID INPUT");

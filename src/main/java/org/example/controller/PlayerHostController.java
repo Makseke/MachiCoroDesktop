@@ -2,6 +2,7 @@ package org.example.controller;
 
 import com.esotericsoftware.kryonet.Server;
 import org.example.App;
+import org.example.service.PlayerService;
 import org.example.service.ServerService;
 
 import java.util.Scanner;
@@ -16,16 +17,21 @@ public class PlayerHostController {
 
     public static void playerHostController(){
         System.out.println("SELECT OPTION " +
-                "\n 1 - SHOW PLAYERS LIST " +
-                "\n 2 - SHOW NAME " +
-                "\n 3 - EXIT");
+                "\n 1 - MY INFO " +
+                "\n 2 - PLAYERS INFO " +
+                "\n 3 - ALL PLAYERS INFO " +
+                "\n 4 - EXIT");
         operationType = in.nextInt();
         switch (operationType) {
             case 1 -> {
-                ServerService.showPlayersList();
+
             }
             case 2 -> {
-                ServerService.showHostName();
+
+            }
+            case 3 -> {
+                App.logger.info("ALL PLAYERS INFO");
+                PlayerService.getPlayersInfo();
             }
             case 3 -> exit(0);
             default -> App.logger.info("INVALID INPUT");
