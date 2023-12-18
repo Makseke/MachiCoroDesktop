@@ -10,8 +10,6 @@ import lombok.Setter;
 import org.example.App;
 import org.example.controller.HostController;
 import org.example.controller.PlayerHostController;
-import org.example.entity.EstablishmentCard;
-import org.example.entity.LandmarkCard;
 import org.example.entity.Player;
 import org.example.mapper.ClientMapper;
 import org.example.mapper.ClientPublicInfoMapper;
@@ -170,11 +168,24 @@ public class ServerService {
     }
 
     public static void updateClientsPlayersLists() {
-        server.sendToAllTCP(new UpdatePlayersRequestTO(gson.toJson(
+        String playersJson = gson.toJson(
                 PlayerRepository.getPlayers()
                         .stream()
-                        .map(PlayerMapper::toTransferObject)
-                        .toList()
-        )));
+                        .map(PlayerMapper::toObject)
+                        .toList());
+
+        int length = playersJson.length();
+
+        List<String> result = new ArrayList<>();
+        int j = 0;
+
+        for (int i = 0; i < length; i += 255) {
+            int end = Math.min(length, i + 255);
+            result.add(playersJson.substring(i, end));
+        }
+
+        for (String jsonPart : result){
+            server.sendToAllTCP(new UpdatePlayersRequestTO(jsonPart));
+        }
     }
 }

@@ -11,6 +11,7 @@ import lombok.Getter;
 import org.example.App;
 import org.example.controller.ClientController;
 import org.example.controller.PlayerClientController;
+import org.example.mapper.PlayerMapper;
 import org.example.repository.PlayerRepository;
 import org.example.to.domain.game.PlayerTO;
 import org.example.to.domain.server.*;
@@ -34,6 +35,8 @@ public class ClientService {
     private static Client client = new Client();
 
     private static Gson gson = new Gson();
+
+    private static String jsonParts = "";
 
 
     public static void startClient() {
@@ -83,9 +86,18 @@ public class ClientService {
                     App.gameStatus = true;
                 }
                 else if (object instanceof UpdatePlayersRequestTO request) {
-                    App.logger.info("PLAYERS LIST UPDATED");
+                    App.logger.info("PLAYERS INFO PART");
                     Type listType = new TypeToken<List<PlayerTO>>() {}.getType();
-                    PlayerRepository.setPlayers(gson.fromJson(request.getPlayersJson(), listType));
+
+                    jsonParts += request.getPlayersJson();
+                    try{
+                        List<PlayerTO> playersListTO = gson.fromJson(jsonParts, listType);
+                        PlayerRepository.setPlayers(playersListTO.stream().map(PlayerMapper ::toObject).toList());
+                        System.out.println("BUILD COMPLETED");
+                    }
+                    catch (Exception e){
+
+                    }
                 }
 
             }
