@@ -18,16 +18,6 @@ public class WindowClientController {
     @FXML
     private TextField nameField;
 
-    protected String showIP() {
-        InetAddress localhost;
-        try {
-            localhost = InetAddress.getLocalHost();
-        } catch (UnknownHostException e) {
-            throw new RuntimeException(e);
-        }
-        return localhost.getHostAddress();
-    }
-
     @FXML
     protected void getName() {
         System.out.println(nameField.getText());

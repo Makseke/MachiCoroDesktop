@@ -2,8 +2,8 @@ package org.machicoro;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import org.machicoro.service.ServerService;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -28,7 +28,8 @@ public class WindowServerController {
     }
 
     @FXML
-    protected void getName() {
+    protected void launchServer() {
+        ServerService.startServer();
         System.out.println(textField.getText());
     }
 

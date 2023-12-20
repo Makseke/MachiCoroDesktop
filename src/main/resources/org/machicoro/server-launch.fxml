@@ -13,11 +13,12 @@
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
     </padding>
 
+    <Label text="Server menu" />
     <Label fx:id="ip"/>
     <HBox xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
         <Label text="Player name: " />
         <TextField fx:id="textField" promptText="Enter player name"/>
     </HBox>
-    <Button text="Launch server" onAction="#getName"/>
+    <Button text="Launch server" onAction="#launchServer"/>
     <Button text="Exit" onAction="#onExitButtonClick"/>
 </VBox>
