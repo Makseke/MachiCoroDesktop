@@ -8,7 +8,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="org.machicoro.WindowClientController">
+      fx:controller="org.machicoro.controller.window.WindowClientController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
     </padding>
@@ -22,6 +22,6 @@
         <Label text="Host IP: " />
         <TextField fx:id="ipField" promptText="Enter host ip" HBox.hgrow="ALWAYS"/>
     </HBox>
-    <Button text="Connect to server" onAction="#getName"/>
+    <Button text="Connect to server" onAction="#tryToConnect"/>
     <Button text="Exit" onAction="#onExitButtonClick"/>
 </VBox>

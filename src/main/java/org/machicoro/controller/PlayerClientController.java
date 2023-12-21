@@ -1,9 +1,9 @@
 package org.machicoro.controller;
 
 import com.esotericsoftware.kryonet.Client;
-import org.machicoro.ConsoleApp;
 import org.machicoro.service.ClientService;
 import org.machicoro.service.PlayerService;
+import org.machicoro.util.LoggerConfig;
 
 import java.util.Scanner;
 
@@ -30,11 +30,11 @@ public class PlayerClientController {
                 System.out.println(" ");
             }
             case 3 -> {
-                ConsoleApp.logger.info("ALL PLAYERS INFO");
+                LoggerConfig.getLogger().info("ALL PLAYERS INFO");
                 PlayerService.getPlayersInfo();
             }
             case 4 -> exit(0);
-            default -> ConsoleApp.logger.info("INVALID INPUT");
+            default -> LoggerConfig.getLogger().info("INVALID INPUT");
         }
     }
 }

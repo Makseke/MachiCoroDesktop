@@ -8,14 +8,14 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="org.machicoro.WindowServerController">
+      fx:controller="org.machicoro.controller.window.WindowServerController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
     </padding>
 
     <Label text="Server menu" />
     <Label fx:id="ip"/>
-    <HBox xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <HBox alignment="CENTER" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
         <Label text="Player name: " />
         <TextField fx:id="textField" promptText="Enter player name"/>
     </HBox>
