@@ -42,8 +42,6 @@ public class ClientService {
     private PlayerRepository playerRepository = PlayerRepository.getInstance();
     private WindowConfig windowConfig = WindowConfig.getInstance();
 
-    private AddPlayerResponseTO addPlayerResponseTO;
-
     private Gson gson = new Gson();
 
     private String jsonParts = "";
@@ -54,9 +52,6 @@ public class ClientService {
         client.getKryo().register(AddPlayerResponseTO.class);
         client.getKryo().register(StartGameRequestTO.class);
         client.getKryo().register(UpdatePlayersRequestTO.class);
-
-        AddPlayerResponseTO addPlayerResponseTO = new AddPlayerResponseTO(clientName);
-
 
         client.addListener(new Listener() {
             @Override
@@ -84,8 +79,7 @@ public class ClientService {
                         List<PlayerTO> playersListTO = gson.fromJson(jsonParts, listType);
                         playerRepository.setPlayers(playersListTO.stream().map(PlayerMapper::toObject).toList());
                         updateLobbyList();
-                        System.out.println("BUILD COMPLETED");
-                        System.out.println(playerRepository.getPlayers().size());
+                        LoggerConfig.getLogger().info("UPDATED PLAYERS LIST");
                     } catch (Exception e) {
 
                     }
@@ -96,13 +90,12 @@ public class ClientService {
             public void connected(Connection connection) {
                 connection.setTimeout(0);
                 connection.setKeepAliveTCP(5000);
-                connection.sendTCP(addPlayerResponseTO);
+                connection.sendTCP(new AddPlayerResponseTO(clientName));
             }
         });
 
         client.start();
         client.connect(5000, ip, 54555, 54777);
-        LoggerConfig.getLogger().info("CONNECTED AS " + addPlayerResponseTO.getName());
     }
 
     private void updateLobbyList() {
