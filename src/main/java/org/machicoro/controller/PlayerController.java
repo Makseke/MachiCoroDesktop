@@ -116,7 +116,6 @@ public class PlayerController {
         hbox.getChildren().addAll(
                 new Label("COST: " + card.getCost() + "  "),
                 new Label("TYPE: " + card.getType() + "  "),
-                new Label("EFFECT: " + card.getPassive() + "  "),
                 new Label("COUNT: " + card.getCount() + "  ")
         );
         return hbox;

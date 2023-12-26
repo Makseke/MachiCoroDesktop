@@ -1,15 +1,16 @@
 package org.machicoro.to.domain.server;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.io.Serializable;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class ClientPublicInfoTO implements Serializable{
+@Getter
+@Setter
+public class AddPlayerResponseTO implements Serializable {
     private String name;
-    private String clientType;
 }

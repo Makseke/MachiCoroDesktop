@@ -4,20 +4,22 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import org.machicoro.enumaration.CardType;
 
 import java.io.Serializable;
+import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class EstablishmentCardTO extends CardTO implements Serializable {
-    private int type;
+    private CardType type;
     private int passive;
     private int count;
-    private int condition;
+    private List<Integer> condition;
 
-    public EstablishmentCardTO(int id, String title, String description, int cost, int type, int passive, int count, int condition) {
+    public EstablishmentCardTO(int id, String title, String description, int cost, CardType type, int passive, int count, List<Integer> condition) {
         this.setId(id);
         this.setTitle(title);
         this.setDescription(description);

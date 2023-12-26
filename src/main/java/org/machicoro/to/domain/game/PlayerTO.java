@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.machicoro.enumaration.PlayerType;
-import org.machicoro.to.domain.server.ClientTO;
 
 import java.io.Serializable;
 import java.util.ArrayList;

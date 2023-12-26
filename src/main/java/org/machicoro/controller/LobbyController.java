@@ -89,6 +89,7 @@ public class LobbyController {
         Label clientNameLabel = new Label(clientName);
 
         hbox.getChildren().addAll(clientTypeLabel, clientNameLabel);
+        hbox.setSpacing(20);
         vbox.getChildren().add(hbox);
     }
 

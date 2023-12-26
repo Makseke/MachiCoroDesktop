@@ -3,6 +3,9 @@ package org.machicoro.repository;
 import lombok.Setter;
 import org.machicoro.entity.EstablishmentCard;
 import org.machicoro.entity.LandmarkCard;
+import org.machicoro.enumaration.CardType;
+
+import java.util.ArrayList;
 
 public class CardRepository {
     @Setter
@@ -18,13 +21,13 @@ public class CardRepository {
     public EstablishmentCard addEstablishmentCard(int id) {
         switch (id) {
             case 1 -> {
-                return new EstablishmentCard(id, "Поля", "Получите 1 монету в ход любого игрока", 1, 3, 1, 1, 1);
+                return new EstablishmentCard(id, "Поля", "Получите 1 монету в ход любого игрока", 1, CardType.BLUE_FOR_ALL, 1, 1, new ArrayList<>() {{add(1);}});
             }
             case 2 -> {
-                return new EstablishmentCard(id, "Ферма", "Получите 1 монету в свой ход", 1, 2, 1, 1, 1);
+                return new EstablishmentCard(id, "Ферма", "Получите 1 монету в свой ход", 1, CardType.GREEN_FOR_PLAYER, 1, 1, new ArrayList<>() {{add(2);}});
             }
             default -> {
-                return new EstablishmentCard(id, "Ошибка Id", "Меня не должно тут быть", 100, 1, 100, 1, 1);
+                return new EstablishmentCard(id, "Ошибка Id", "Меня не должно тут быть", 100, CardType.BLUE_FOR_ALL, 100, 1, new ArrayList<>() {{add(-1);}});
             }
         }
     }
