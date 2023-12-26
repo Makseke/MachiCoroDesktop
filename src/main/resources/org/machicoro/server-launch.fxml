@@ -8,17 +8,21 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
 <VBox alignment="CENTER" spacing="20.0" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="org.machicoro.controller.window.WindowServerController">
+      fx:controller="org.machicoro.controller.ServerController" fx:id="vBox">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
     </padding>
 
-    <Label text="Server menu" />
+    <Label fx:id="menuLabel"/>
     <Label fx:id="ip"/>
     <HBox alignment="CENTER" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
         <Label text="Player name: " />
-        <TextField fx:id="textField" promptText="Enter player name"/>
+        <TextField fx:id="nameField" promptText="Enter player name"/>
     </HBox>
-    <Button text="Launch server" onAction="#launchServer"/>
+    <HBox xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:id="hBoxIp" alignment="CENTER" >
+        <Label text="Host IP: " />
+        <TextField fx:id="ipField" promptText="Enter host ip"/>
+    </HBox>
+    <Button text="Launch server" onAction="#launchServer" fx:id="launchButton"/>
     <Button text="Exit" onAction="#onExitButtonClick"/>
 </VBox>

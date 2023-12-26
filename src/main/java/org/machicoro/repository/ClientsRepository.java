@@ -12,24 +12,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 public class ClientsRepository {
-    @Getter
-    @Setter
-    private static List<ClientTO> clients = new ArrayList<>();
+    private static ClientsRepository instance;
 
-    @Getter
-    @Setter
-    private static List<ClientPublicInfoTO> clientsPublicInfoTO = new ArrayList<>();
+    public static ClientsRepository getInstance() {
+        if (instance == null) {
+            instance = new ClientsRepository();
+        }
+        return instance;
+    }
 
-    public static List<ClientPublicInfoTO> getClientPublicInfo() {
+    private List<ClientTO> clients = new ArrayList<>();
+
+    private List<ClientPublicInfoTO> clientsPublicInfoTO = new ArrayList<>();
+
+    public List<ClientPublicInfoTO> getClientPublicInfo() {
         return clients
                 .stream()
                 .map(ClientPublicInfoMapper::toTransferObject)
                 .toList();
     }
-    public static ClientTO getClientToByConnectionId(int connection){
+
+    public ClientTO getClientToByConnectionId(int connection) {
         return clients
                 .stream()
                 .filter(client -> client.getConnectionId() == connection)

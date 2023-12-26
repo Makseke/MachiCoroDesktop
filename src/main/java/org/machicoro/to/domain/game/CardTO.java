@@ -4,12 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class CardTO {
-    private int id;
-    private String title;
-    private String description;
-    private int cost;
+public class CardTO implements Serializable {
+    protected int id;
+    protected String title;
+    protected String description;
+    protected int cost;
 }

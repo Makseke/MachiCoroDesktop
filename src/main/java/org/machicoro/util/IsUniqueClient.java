@@ -1,12 +1,13 @@
 package org.machicoro.util;
 
-import org.machicoro.repository.ClientsRepository;
+import org.machicoro.repository.PlayerRepository;
 import org.machicoro.to.domain.server.ClientTO;
 
 public class IsUniqueClient {
+    private static PlayerRepository playerRepository = PlayerRepository.getInstance();
     public static boolean isUnique(ClientTO client){
-        return ClientsRepository.getClients()
+        return playerRepository.getPlayers()
                 .stream()
-                .anyMatch(client_ -> client_.getName().equals(client.getName()));
+                .anyMatch(player -> player.getName().equals(client.getName()));
     }
 }

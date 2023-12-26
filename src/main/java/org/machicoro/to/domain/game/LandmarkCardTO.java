@@ -5,11 +5,13 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class LandmarkCardTO extends CardTO {
+public class LandmarkCardTO extends CardTO implements Serializable {
     private boolean status;
     private int active;
 

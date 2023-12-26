@@ -1,10 +1,21 @@
 package org.machicoro.repository;
 
+import lombok.Setter;
 import org.machicoro.entity.EstablishmentCard;
 import org.machicoro.entity.LandmarkCard;
 
 public class CardRepository {
-    public static EstablishmentCard addEstablishmentCard(int id) {
+    @Setter
+    private static CardRepository instance;
+
+    public static CardRepository getInstance() {
+        if (instance == null) {
+            instance = new CardRepository();
+        }
+        return instance;
+    }
+
+    public EstablishmentCard addEstablishmentCard(int id) {
         switch (id) {
             case 1 -> {
                 return new EstablishmentCard(id, "Поля", "Получите 1 монету в ход любого игрока", 1, 3, 1, 1, 1);
@@ -18,7 +29,7 @@ public class CardRepository {
         }
     }
 
-    public static LandmarkCard addLandscapeCard(int id) {
+    public LandmarkCard addLandscapeCard(int id) {
         switch (id) {
             case 1 -> {
                 return new LandmarkCard(id, "Вокзал", "Можете бросать 2 кубика вместо 1. В свой ход", 4, false, id);

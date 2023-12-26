@@ -10,16 +10,15 @@ import org.machicoro.util.LoggerConfig;
 import java.io.IOException;
 
 public class WindowApp extends Application {
-    public static Stage primaryStage;
+//    public static Stage primaryStage;
+
+    private WindowConfig windowConfig = WindowConfig.getInstance();
+
 
     @Override
     public void start(Stage stage) throws IOException {
-        primaryStage = stage;
-        FXMLLoader fxmlLoader = new FXMLLoader(WindowApp.class.getResource("launch-menu.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), WindowConfig.getWindowWight(), WindowConfig.getWindowHeight());
-        WindowApp.primaryStage.setTitle(WindowConfig.getWindowName());
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        windowConfig.setPrimaryStage(stage);
+        windowConfig.updateWindow("launch-menu.fxml");
     }
 
     public static void main(String[] args) {

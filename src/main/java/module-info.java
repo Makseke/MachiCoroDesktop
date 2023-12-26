@@ -22,6 +22,7 @@ module org.machicoro {
     opens org.machicoro.to.domain.server to kryo, com.google.gson;
     opens org.machicoro.to.request to kryo, com.google.gson;
     opens org.machicoro.to.domain.game to kryo, com.google.gson;
-    exports org.machicoro.controller.window;
-    opens org.machicoro.controller.window to javafx.fxml;
+    exports org.machicoro.controller;
+    opens org.machicoro.controller to javafx.fxml;
+    exports org.machicoro.enumaration;
 }

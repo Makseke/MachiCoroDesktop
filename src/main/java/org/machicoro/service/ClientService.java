@@ -7,12 +7,9 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.machicoro.config.WindowConfig;
-import org.machicoro.controller.window.WindowClientLobbyController;
+import org.machicoro.controller.LobbyController;
 import org.machicoro.repository.ClientsRepository;
 import org.machicoro.util.LoggerConfig;
 import org.machicoro.util.mapper.PlayerMapper;
@@ -30,28 +27,35 @@ import java.lang.reflect.Type;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.List;
-import java.util.Scanner;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class ClientService {
-    private static final Scanner in = new Scanner(System.in);
-    private static int  operationType;
 
-    @Getter
-    @Setter
-    private static Client client = new Client();
+    public static ClientService instance;
 
-    @Setter
-    @Getter
-    private static ClientTO clientTO;
+    public static ClientService getInstance() {
+        if (instance == null) {
+            instance = new ClientService();
+        }
+        return instance;
+    }
 
-    private static Gson gson = new Gson();
+    private Client client = new Client();
 
-    private static String jsonParts = "";
+    private ClientsRepository clientsRepository = ClientsRepository.getInstance();
+    private PlayerRepository playerRepository = PlayerRepository.getInstance();
+    private WindowConfig windowConfig = WindowConfig.getInstance();
+
+    private ClientTO clientTO;
+
+    private Gson gson = new Gson();
+
+    private String jsonParts = "";
 
 
-    public static void startClient(String clientName, String ip) throws IOException {
+    public void startClient(String clientName, String ip) throws IOException {
         client.getKryo().register(TextTO.class);
         client.getKryo().register(ClientTO.class);
         client.getKryo().register(ClientPublicInfoTO.class);
@@ -74,32 +78,40 @@ public class ClientService {
             public void received(Connection connection, Object object) {
                 if (object instanceof TextTO response) {
                     LoggerConfig.getLogger().info("SERVER RESPONSE: " + response.getText());
-                }
-                else if (object instanceof ClientsListTO response) {
+                } else if (object instanceof ClientsListTO response) {
                     LoggerConfig.getLogger().info("UPDATED LOBBY LIST");
-                    Type listType = new TypeToken<List<ClientPublicInfoTO>>() {}.getType();
-                    ClientsRepository.setClientsPublicInfoTO(gson.fromJson(response.getJsonClients(), listType));
+                    Type listType = new TypeToken<List<ClientPublicInfoTO>>() {
+                    }.getType();
+                    clientsRepository.setClientsPublicInfoTO(gson.fromJson(response.getJsonClients(), listType));
                     System.out.println("UPDATED CLIENT REPOSITORY");
                     updateLobbyList();
-                }
-                else if (object instanceof ClientPublicInfoTO response) {
+                } else if (object instanceof ClientPublicInfoTO response) {
                     LoggerConfig.getLogger().info("DISPLAY NAME");
                     System.out.println("YOUR NAME IS " + response.getName());
-                }
-                else if (object instanceof StartGameRequestTO) {
+                } else if (object instanceof StartGameRequestTO) {
                     LoggerConfig.getLogger().info("GAME STARTED");
-                }
-                else if (object instanceof UpdatePlayersRequestTO request) {
-                    LoggerConfig.getLogger().info("PLAYERS INFO PART");
-                    Type listType = new TypeToken<List<PlayerTO>>() {}.getType();
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                windowConfig.updateWindow("table-menu.fxml");
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                    });
+                } else if (object instanceof UpdatePlayersRequestTO request) {
+                    Type listType = new TypeToken<List<PlayerTO>>() {
+                    }.getType();
 
                     jsonParts += request.getPlayersJson();
-                    try{
+                    try {
                         List<PlayerTO> playersListTO = gson.fromJson(jsonParts, listType);
-                        PlayerRepository.setPlayers(playersListTO.stream().map(PlayerMapper ::toObject).toList());
+                        playerRepository.setPlayers(playersListTO.stream().map(PlayerMapper::toObject).toList());
+                        updateLobbyList();
                         System.out.println("BUILD COMPLETED");
-                    }
-                    catch (Exception e){
+                        System.out.println(playerRepository.getPlayers().size());
+                    } catch (Exception e) {
 
                     }
                 }
@@ -113,14 +125,14 @@ public class ClientService {
             }
         });
 
-            client.start();
-            client.connect(5000, ip, 54555, 54777);
+        client.start();
+        client.connect(5000, ip, 54555, 54777);
         LoggerConfig.getLogger().info("CONNECTED AS " + clientTO.getName() + " WITH IP " + clientTO.getIp());
     }
 
-    private static void updateLobbyList(){
-        FXMLLoader loader = WindowConfig.getLoader();
-        if (loader.getController() instanceof WindowClientLobbyController controller){
+    private void updateLobbyList() {
+        FXMLLoader loader = windowConfig.getLoader();
+        if (loader.getController() instanceof LobbyController controller) {
             Platform.runLater(new Runnable() {
                 @Override
                 public void run() {
@@ -128,5 +140,6 @@ public class ClientService {
                 }
             });
         }
+        jsonParts = "";
     }
 }

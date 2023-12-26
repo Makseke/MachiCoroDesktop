@@ -9,6 +9,6 @@ import java.io.Serializable;
 @Getter
 @Setter
 @ToString
-public class TextTO {
+public class TextTO implements Serializable {
     private String text;
 }

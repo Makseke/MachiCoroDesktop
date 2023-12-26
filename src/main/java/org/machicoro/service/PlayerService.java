@@ -1,21 +1,28 @@
 package org.machicoro.service;
 
-import org.machicoro.entity.Client;
 import org.machicoro.entity.EstablishmentCard;
 import org.machicoro.entity.LandmarkCard;
 import org.machicoro.entity.Player;
 import org.machicoro.repository.PlayerRepository;
-import org.machicoro.to.domain.server.ClientTO;
 
 import java.util.List;
-import java.util.stream.Stream;
 
 public class PlayerService {
+    private PlayerRepository playerRepository = PlayerRepository.getInstance();
 
-    public static void getPlayersInfo() {
-        List<Player> players = PlayerRepository.getPlayers();
+    public static PlayerService instance;
+
+    public static PlayerService getInstance() {
+        if (instance == null) {
+            instance = new PlayerService();
+        }
+        return instance;
+    }
+
+    public void getPlayersInfo() {
+        List<Player> players = playerRepository.getPlayers();
         for (Player player : players) {
-            System.out.println("NAME: " + player.getClient().getName());
+            System.out.println("NAME: " + player.getName());
             System.out.println("COINS: " + player.getCoins());
             for (EstablishmentCard card : player.getEstablishmentCards()) {
                 System.out.println("CARD NAME: " + card.getTitle());
@@ -37,11 +44,11 @@ public class PlayerService {
         }
     }
 
-    public static void getPlayersInfoExceptClient(String clientName) {
-        List<Player> players = PlayerRepository.getPlayers();
+    public void getPlayersInfoExceptClient(String clientName) {
+        List<Player> players = playerRepository.getPlayers();
         for (Player player : players) {
-            if (!player.getClient().getName().equals(clientName)) {
-                System.out.println("NAME: " + player.getClient().getName());
+            if (!player.getName().equals(clientName)) {
+                System.out.println("NAME: " + player.getName());
                 System.out.println("COINS: " + player.getCoins());
                 for (EstablishmentCard card : player.getEstablishmentCards()) {
                     System.out.println("CARD NAME: " + card.getTitle());
@@ -63,11 +70,11 @@ public class PlayerService {
         }
     }
 
-    public static void getPlayerInfo(String clientName) {
-        List<Player> players = PlayerRepository.getPlayers();
+    public void getPlayerInfo(String clientName) {
+        List<Player> players = playerRepository.getPlayers();
         for (Player player : players) {
-            if (player.getClient().getName().equals(clientName)) {
-                System.out.println("NAME: " + player.getClient().getName());
+            if (player.getName().equals(clientName)) {
+                System.out.println("NAME: " + player.getName());
                 System.out.println("COINS: " + player.getCoins());
                 for (EstablishmentCard card : player.getEstablishmentCards()) {
                     System.out.println("CARD NAME: " + card.getTitle());

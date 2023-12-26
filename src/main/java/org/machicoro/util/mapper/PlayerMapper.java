@@ -6,7 +6,8 @@ import org.machicoro.to.domain.game.PlayerTO;
 public class PlayerMapper {
     public static PlayerTO toObject(Player player){
         return new PlayerTO(
-                ClientMapper.toTransferObject(player.getClient()),
+                player.getName(),
+                player.getPlayerType(),
                 player.getCoins(),
                 player.getEstablishmentCards().stream().map(EstablishmentCardMapper::toTransferobject).toList(),
                 player.getLandmarkCards().stream().map(LandmarkCardMapper::toTransferObject).toList()
@@ -15,7 +16,9 @@ public class PlayerMapper {
 
     public static Player toObject(PlayerTO player){
         return new Player(
-                ClientMapper.toObject(player.getClientTO()),
+                -1,
+                player.getName(),
+                player.getPlayerType(),
                 player.getCoins(),
                 player.getEstablishmentCardsTO().stream().map(EstablishmentCardMapper::toObject).toList(),
                 player.getLandmarkCardsTO().stream().map(LandmarkCardMapper::toObject).toList()

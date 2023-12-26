@@ -5,11 +5,13 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class EstablishmentCardTO extends CardTO {
+public class EstablishmentCardTO extends CardTO implements Serializable {
     private int type;
     private int passive;
     private int count;
